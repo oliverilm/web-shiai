@@ -1,0 +1,105 @@
+#!/bin/bash
+
+
+cd ./backend
+# TODO: command to init venv and install deps
+
+case $1 in
+    help)
+        echo "Commands that can be run:"
+        echo "  ./run start local             Start local dev server in a docker container"
+        echo "  ./run start prod              Start prod server in a docker container"
+        echo ""
+        echo "  ./run db makemigrations       Generate database migrations"
+        echo "  ./run db migrate              Apply database migrations"
+        exit
+    ;;
+
+    install)
+        source venv/bin/activate
+        pip install -r requirements.txt
+        exit
+        ;;
+    # LOCAL ENV COMMANDS START HERE
+    local:start)
+        source venv/bin/activate
+        cd api
+        python3 manage.py runserver 0.0.0.0:8000
+        exit
+    ;;
+
+    local:install)
+        source venv/bin/activate
+        pip install -r requirements.txt
+        exit
+    ;;
+    local:test)
+        source venv/bin/activate
+        cd api
+        python3 manage.py test
+        exit
+    ;;
+    makemigrations)
+        source venv/bin/activate
+        cd api
+        python3 manage.py makemigrations
+        exit
+    ;;
+    flush)
+        source venv/bin/activate
+        cd api
+        python3 manage.py flush
+        exit
+    ;;
+
+    # DOCKER COMMANDS START HERE
+    docker:build)
+        sudo docker compose -f ./compose/docker-compose-local.yml up --build
+        exit
+    ;;
+    docker:start)
+        sudo docker compose -f ./compose/docker-compose-local.yml up
+        exit
+    ;;
+    docker:start:prod)
+        # TODO
+        exit
+    ;;
+    docker:migrate)
+        sudo docker compose -f ./compose/docker-compose-local.yml run shiai_master_api python manage.py migrate --no-input
+        exit
+    ;;
+
+    docker:makemigrations)
+        sudo docker compose -f ./compose/docker-compose-local.yml run shiai_master_api python manage.py makemigrations
+        exit
+    ;;
+
+    docker:csu)
+        sudo docker compose -f ./compose/docker-compose-local.yml run shiai_master_api python manage.py createsuperuser
+        exit
+    ;;
+
+    docker:flush)
+        sudo docker compose -f ./compose/docker-compose-local.yml run shiai_master_api python manage.py flush
+        exit
+    ;;
+
+    docker:down)
+        sudo docker compose -f ./compose/docker-compose-local.yml down
+        exit
+    ;;
+    docker:collect-static)
+        sudo docker compose -f ./compose/docker-compose-local.yml run shiai_master_api python manage.py collectstatic
+        exit
+    ;;
+    *)
+        chmod +x ./scripts/$1
+        ./scripts/$1 $2
+        exit
+    ;;
+
+    
+esac
+
+        

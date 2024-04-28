@@ -1,0 +1,24 @@
+#!/bin/bash
+
+source ./scripts/variables
+
+cd api
+
+case $1 in
+    local)
+        ls
+        python3 manage.py runserver
+    ;;
+
+    test)
+        python3 manage.py test
+    ;;
+    prod)
+        sudo docker-compose -f $compose_prod up 
+    ;;
+*)
+exit
+;;
+esac
+
+        

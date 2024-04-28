@@ -1,0 +1,30 @@
+#!/bin/bash
+
+case $1 in
+    help)
+        echo "Commands that can be run:"
+        echo "  ./run start local             Start local dev server in a docker container"
+        echo "  ./run start prod              Start prod server in a docker container"
+        echo ""
+        echo "  ./run db makemigrations       Generate database migrations"
+        echo "  ./run db migrate              Apply database migrations"
+
+        exit
+    ;;
+    bo)
+        chmod +x ./backend/run
+        ./backend/run $2
+        exit
+    ;;
+
+    fo)
+        chmod +x ./frontend/run
+        ./frontend/run $2
+        exit
+    ;;
+
+    start)
+        sudo docker compose up
+        exit
+    ;;
+esac

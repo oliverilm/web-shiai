@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  shiai_master_db_2:
+    image: postgres:14.1-alpine
+    container_name: shiai_master_db_2
+    restart: always
+    volumes:
+      - ./data/shiai_master_db_22:/var/lib/postgresql/data2
+    env_file:
+      - ../.env
+    ports:
+      - '5432:5432'
+
+  shiai_master_api:
+    build :
+      context: ../
+      dockerfile: Dockerfile.local
+    ports : 
+      - "8000:8000"
+    env_file:
+      - ../.env
+    volumes: 
+      - ../api/:/src
+    depends_on:
+      - shiai_master_db_2
+    links:
+      - shiai_master_db_2:shiai_master_db_2
+
+
+volumes:
+  shiai_master_db_2:
+

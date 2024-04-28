@@ -1,0 +1,4 @@
+#!/bin/bash
+
+compose_local=./compose/docker-compose-local.yml
+compose_prod=./compose/docker-compose-prod.yml

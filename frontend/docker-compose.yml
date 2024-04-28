@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  # Vite React App
+  frontend:
+    ports:
+      - "5173:5173"
+    expose:
+      - 5173
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - .:/
+    environment:
+      - NODE_ENV=development  # Optional: Set to 'production' for optimized build
+  
